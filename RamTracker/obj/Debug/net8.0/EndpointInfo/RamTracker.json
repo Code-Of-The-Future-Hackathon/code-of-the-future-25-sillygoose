@@ -1,0 +1,22 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "RamTracker",
+    "version": "1.0"
+  },
+  "paths": {
+    "/api/Ram": {
+      "get": {
+        "tags": [
+          "Ram"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    }
+  },
+  "components": { }
+}

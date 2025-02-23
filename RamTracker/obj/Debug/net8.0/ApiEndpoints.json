@@ -1,0 +1,12 @@
+[
+  {
+    "ContainingType": "RamTracker.Controllers.RamController",
+    "Method": "GetRamUsage",
+    "RelativePath": "api/Ram",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  }
+]
