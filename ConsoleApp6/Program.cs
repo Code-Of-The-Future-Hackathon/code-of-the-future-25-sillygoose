@@ -1,4 +1,4 @@
-﻿using MySql.Data.MySqlClient;
+using MySql.Data.MySqlClient;
 using Org.BouncyCastle.Utilities.Net;
 using System.Net;
 using System.Net.Mail;
@@ -25,7 +25,7 @@ namespace ConsoleApp6
         static void Main(string[] args)
         {
             float w_ram_percent_used = 80;
-            float w_cpu_usage = 20;
+            float w_cpu_usage = 30;
             float w_storage_percent_used = 80;
             float w_wifi_up_usage = 50;
             float w_wifi_down_usage = 50;
@@ -38,19 +38,21 @@ namespace ConsoleApp6
             DateTime next_wifi_warning = DateTime.Now;
             DateTime next_ethernet_warning = DateTime.Now;
 
-            int minutes_cd_ram_warning = 1;
-            int minutes_cd_cpu_usage_warning = 1;
-            int minutes_cd_storage_warning = 1;
-            int minutes_cd_wifi_warning = 1;
-            int minutes_cd_ethernet_warning = 1;
+            int minutes_cd_ram_warning = 5;
+            int minutes_cd_cpu_usage_warning = 5;
+            int minutes_cd_storage_warning = 5;
+            int minutes_cd_wifi_warning = 5;
+            int minutes_cd_ethernet_warning = 5;
 
+            string fromAddress = "simwarnings@gmail.com";
+            string toAddress = "warningsreceiver@gmail.com";
+            string smtpServer = "smtp.gmail.com";
+            int smtpPort = 587;
+            string username = "simwarnings@gmail.com";
+            string password = "";
+            
 
-            var fromAddress = new MailAddress("sender@gmail.com", "Sender");
-            var toAddress = new MailAddress("receiver@gmail.com", "Receiver");
-            const string fromPassword = "password";
-
-
-            string connectionString = "server=localhost;user=root;password=mamati1;database=Sensors";
+            string connectionString = "server=localhost;user=root;password=<pass>;database=Sensors";
 
             using MySqlConnection conn = new MySqlConnection(connectionString);
             conn.Open();
@@ -74,29 +76,25 @@ namespace ConsoleApp6
 
                         cmd.ExecuteNonQuery();
 
-                        //const string subject = "Warning: RAM usage exceeds the specified limit";
-                        //const string body = "";
-
-                        //var smtp = new SmtpClient
-                        //{
-                        //    Host = "smtp.gmail.com", // e.g., smtp.gmail.com for Gmail
-                        //    Port = 587, // Use 465 for SSL or 587 for TLS
-                        //    EnableSsl = false,
-                        //    DeliveryMethod = SmtpDeliveryMethod.Network,
-                        //    UseDefaultCredentials = false,
-                        //    Credentials = new NetworkCredential(fromAddress.Address, fromPassword)
-                        //};
-
-                        Console.WriteLine("---");
-                        using (var message = new MailMessage(fromAddress, toAddress)
+                        try
                         {
-                            Subject = subject,
-                            Body = body
-                        })
-                        {
-                            smtp.Send(message);
+                            MailMessage mail = new MailMessage();
+                            mail.From = new MailAddress(fromAddress);
+                            mail.To.Add(toAddress);
+                            mail.Subject = $"RAM usage exceeds the specified {w_ram_percent_used}%";
+                            mail.Body = mail.Subject;
+
+                            SmtpClient smtpClient = new SmtpClient(smtpServer, smtpPort);
+                            smtpClient.Credentials = new NetworkCredential(username, password);
+                            smtpClient.EnableSsl = true;
+
+                            smtpClient.Send(mail);
+                            //Console.WriteLine("Email sent successfully!");
                         }
-                        Console.WriteLine("----");
+                        catch (Exception ex)
+                        {
+                            Console.WriteLine($"Error sending email: {ex.Message}");
+                        }
 
                         next_ram_warning = DateTime.Now.AddMinutes(minutes_cd_ram_warning);
                     }
@@ -112,6 +110,26 @@ namespace ConsoleApp6
 
                         cmd.ExecuteNonQuery();
 
+                        try
+                        {
+                            MailMessage mail = new MailMessage();
+                            mail.From = new MailAddress(fromAddress);
+                            mail.To.Add(toAddress);
+                            mail.Subject = $"CPU usage exceeds the specified {w_cpu_usage}%";
+                            mail.Body = mail.Subject;
+
+                            SmtpClient smtpClient = new SmtpClient(smtpServer, smtpPort);
+                            smtpClient.Credentials = new NetworkCredential(username, password);
+                            smtpClient.EnableSsl = true;
+
+                            smtpClient.Send(mail);
+                            //Console.WriteLine("Email sent successfully!");
+                        }
+                        catch (Exception ex)
+                        {
+                            Console.WriteLine($"Error sending email: {ex.Message}");
+                        }
+
                         next_cpu_usage_warning = DateTime.Now.AddMinutes(minutes_cd_cpu_usage_warning);
                     }
                 }
@@ -125,6 +143,26 @@ namespace ConsoleApp6
                         cmd.Parameters.AddWithValue("@message", $"Storage used exceeds the specified {w_storage_percent_used}%");
 
                         cmd.ExecuteNonQuery();
+
+                        try
+                        {
+                            MailMessage mail = new MailMessage();
+                            mail.From = new MailAddress(fromAddress);
+                            mail.To.Add(toAddress);
+                            mail.Subject = $"Storage usage exceeds the specified {w_storage_percent_used}%";
+                            mail.Body = mail.Subject;
+
+                            SmtpClient smtpClient = new SmtpClient(smtpServer, smtpPort);
+                            smtpClient.Credentials = new NetworkCredential(username, password);
+                            smtpClient.EnableSsl = true;
+
+                            smtpClient.Send(mail);
+                            //Console.WriteLine("Email sent successfully!");
+                        }
+                        catch (Exception ex)
+                        {
+                            Console.WriteLine($"Error sending email: {ex.Message}");
+                        }
 
                         next_storage_warning = DateTime.Now.AddMinutes(minutes_cd_storage_warning);
                     }
@@ -140,6 +178,26 @@ namespace ConsoleApp6
 
                         cmd.ExecuteNonQuery();
 
+                        try
+                        {
+                            MailMessage mail = new MailMessage();
+                            mail.From = new MailAddress(fromAddress);
+                            mail.To.Add(toAddress);
+                            mail.Subject = $"RAM usage exceeds the specified {w_wifi_up_usage}%";
+                            mail.Body = mail.Subject;
+
+                            SmtpClient smtpClient = new SmtpClient(smtpServer, smtpPort);
+                            smtpClient.Credentials = new NetworkCredential(username, password);
+                            smtpClient.EnableSsl = true;
+
+                            smtpClient.Send(mail);
+                            //Console.WriteLine("Email sent successfully!");
+                        }
+                        catch (Exception ex)
+                        {
+                            Console.WriteLine($"Error sending email: {ex.Message}");
+                        }
+
                         next_wifi_warning = DateTime.Now.AddMinutes(minutes_cd_wifi_warning);
                     }
                 }
@@ -153,6 +211,26 @@ namespace ConsoleApp6
                         cmd.Parameters.AddWithValue("@message", $"Wifi usage exceeds the specified {w_wifi_down_usage}");
 
                         cmd.ExecuteNonQuery();
+
+                        try
+                        {
+                            MailMessage mail = new MailMessage();
+                            mail.From = new MailAddress(fromAddress);
+                            mail.To.Add(toAddress);
+                            mail.Subject = $"RAM usage exceeds the specified {w_wifi_down_usage}%";
+                            mail.Body = mail.Subject;
+
+                            SmtpClient smtpClient = new SmtpClient(smtpServer, smtpPort);
+                            smtpClient.Credentials = new NetworkCredential(username, password);
+                            smtpClient.EnableSsl = true;
+
+                            smtpClient.Send(mail);
+                            //Console.WriteLine("Email sent successfully!");
+                        }
+                        catch (Exception ex)
+                        {
+                            Console.WriteLine($"Error sending email: {ex.Message}");
+                        }
 
                         next_wifi_warning = DateTime.Now.AddMinutes(minutes_cd_wifi_warning);
                     }
@@ -168,6 +246,26 @@ namespace ConsoleApp6
 
                         cmd.ExecuteNonQuery();
 
+                        try
+                        {
+                            MailMessage mail = new MailMessage();
+                            mail.From = new MailAddress(fromAddress);
+                            mail.To.Add(toAddress);
+                            mail.Subject = $"RAM usage exceeds the specified {w_ethernet_up_usage}%";
+                            mail.Body = mail.Subject;
+
+                            SmtpClient smtpClient = new SmtpClient(smtpServer, smtpPort);
+                            smtpClient.Credentials = new NetworkCredential(username, password);
+                            smtpClient.EnableSsl = true;
+
+                            smtpClient.Send(mail);
+                            //Console.WriteLine("Email sent successfully!");
+                        }
+                        catch (Exception ex)
+                        {
+                            Console.WriteLine($"Error sending email: {ex.Message}");
+                        }
+
                         next_ethernet_warning = DateTime.Now.AddMinutes(minutes_cd_ethernet_warning);
                     }
                 }
@@ -181,6 +279,26 @@ namespace ConsoleApp6
                         cmd.Parameters.AddWithValue("@message", $"Ethernet usage exceeds the specified {w_ethernet_down_usage}");
 
                         cmd.ExecuteNonQuery();
+
+                        try
+                        {
+                            MailMessage mail = new MailMessage();
+                            mail.From = new MailAddress(fromAddress);
+                            mail.To.Add(toAddress);
+                            mail.Subject = $"RAM usage exceeds the specified {w_ethernet_up_usage}%";
+                            mail.Body = mail.Subject;
+
+                            SmtpClient smtpClient = new SmtpClient(smtpServer, smtpPort);
+                            smtpClient.Credentials = new NetworkCredential(username, password);
+                            smtpClient.EnableSsl = true;
+
+                            smtpClient.Send(mail);
+                            //Console.WriteLine("Email sent successfully!");
+                        }
+                        catch (Exception ex)
+                        {
+                            Console.WriteLine($"Error sending email: {ex.Message}");
+                        }
 
                         next_ethernet_warning = DateTime.Now.AddMinutes(minutes_cd_ethernet_warning);
                     }
